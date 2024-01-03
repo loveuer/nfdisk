@@ -1,0 +1,13 @@
+{
+  "$schema": "https://wails.io/schemas/config.v2.json",
+  "name": "nf_disk",
+  "outputfilename": "nf_disk",
+  "frontend:install": "pnpm install",
+  "frontend:build": "npx ng build",
+  "frontend:dev:watcher": "npx ng serve",
+  "frontend:dev:serverUrl": "http://localhost:4200",
+  "author": {
+    "name": "loveuer",
+    "email": "loveuer@live.com"
+  }
+}

@@ -1,0 +1,119 @@
+<div class="title">
+  <div class="add-connection">
+    <button (click)="openAddConnection()" mat-mini-fab color="primary"
+            aria-label="add s3 connection" matTooltip="新建 s3 连接">
+      <mat-icon>add</mat-icon>
+    </button>
+
+  </div>
+  <div class="paths">
+  </div>
+</div>
+
+<div class="content">
+  <div class="connection-list">
+    <li *ngFor="let conn of connection_srv.list; index as idx"
+        [class]="connection_srv.current_conn.id === conn.id? 'item active':'item'"
+        [cdkContextMenuTriggerFor]="connContextMenu"
+        [cdkContextMenuTriggerData]="{$implicit: conn}"
+        (dblclick)="connect(conn)"
+    >
+      <div class="item-name">{{ conn.name }}</div>
+    </li>
+    <ng-template #connContextMenu let-passedConn>
+      <div class="connection-menu" cdkMenu>
+        <button class="connection-menu-item" cdkMenuItem>断开连接</button>
+        <button class="connection-menu-item" cdkMenuItem (click)="del_connection(passedConn)">删除连接</button>
+      </div>
+    </ng-template>
+  </div>
+
+  <div class="file-browser">
+    <div class="operation">
+      <div class="svg svg-back">
+        <button mat-icon-button color="primary" aria-label="back" matTooltip="返回上一级" (click)="back()">
+          <mat-icon>undo</mat-icon>
+        </button>
+      </div>
+      <div class="location-path">
+        <div *ngIf="connection_srv.current_bucket">
+          <svg  xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+               stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round"
+                  d="m20.25 7.5-.625 10.632a2.25 2.25 0 0 1-2.247 2.118H6.622a2.25 2.25 0 0 1-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125Z"/>
+          </svg>
+          <div>
+            {{connection_srv.current_bucket}}
+          </div>
+        </div>
+        <div *ngIf="connection_srv.current_paths.join('')">
+          <div>
+            {{connection_srv.current_paths.join('')}}
+          </div>
+        </div>
+        <div class="path-filter" [style]="connection_srv.current_bucket? 'display: flex':'display: none'">
+          <input type="text" [(ngModel)]="this.connection_srv.current_filter" placeholder="过滤(前缀)" #pathFilterRef id="pathFilterRef " />
+          <button (click)="this.connection_srv.current_filter='';connection_srv.filter_list('')" [style]="this.connection_srv.current_filter?'visibility: visible':'visibility: hidden'">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+      </div>
+      <div class="svg svg-plus">
+        <button mat-icon-button color="primary" matTooltip="新建桶" (click)="create_bucket()">
+          <mat-icon>add</mat-icon>
+        </button>
+        <button mat-icon-button color="primary" matTooltip="新建文件夹" (click)="create_folder()">
+          <mat-icon>create_new_folder</mat-icon>
+        </button>
+        <button mat-icon-button color="primary" matTooltip="上传文件" (click)="upload_item()">
+          <mat-icon>upload</mat-icon>
+        </button>
+      </div>
+    </div>
+    <div class="items">
+      <li *ngFor="let item of connection_srv.items" class="item"
+          [cdkContextMenuTriggerFor]="itemContextMenu"
+          [cdkContextMenuTriggerData]="{$implicit: head_item(item)}"
+      >
+        <svg *ngIf="item.type === 'bucket'" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+             stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+          <path stroke-linecap="round" stroke-linejoin="round"
+                d="m20.25 7.5-.625 10.632a2.25 2.25 0 0 1-2.247 2.118H6.622a2.25 2.25 0 0 1-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125Z"/>
+        </svg>
+        <svg *ngIf="item.type === 'folder'" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+             stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+          <path stroke-linecap="round" stroke-linejoin="round"
+                d="M2.25 12.75V12A2.25 2.25 0 0 1 4.5 9.75h15A2.25 2.25 0 0 1 21.75 12v.75m-8.69-6.44-2.12-2.12a1.5 1.5 0 0 0-1.061-.44H4.5A2.25 2.25 0 0 0 2.25 6v12a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9a2.25 2.25 0 0 0-2.25-2.25h-5.379a1.5 1.5 0 0 1-1.06-.44Z"/>
+        </svg>
+        <svg *ngIf="item.type === 'file'" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+             stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+          <path stroke-linecap="round" stroke-linejoin="round"
+                d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"/>
+        </svg>
+        <div (dblclick)="open(item)" class="item-name">{{ item.name }}</div>
+      </li>
+    </div>
+    <ng-template #itemContextMenu let-passedItem>
+      <div class="item-menu" cdkMenu>
+        <button
+          *ngIf="passedItem.type === 'file'"
+          class="item-menu-item"
+          cdkMenuItem
+          (click)="preview_item(passedItem)"
+        >预览文件</button>
+        <button *ngIf="passedItem.type === 'file'" class="item-menu-item" cdkMenuItem (click)="download_item(passedItem)">下载文件</button>
+        <button class="item-menu-item" cdkMenuItem (click)="del_item(passedItem)">删除{{passedItem.type==='bucket'?'桶':passedItem.type==='folder'?'文件夹':'文件'}}</button>
+      </div>
+    </ng-template>
+  </div>
+</div>
+
+<div class="footer">
+
+</div>
+
+<div style="display: none">
+  <a #downloadRef></a>
+</div>

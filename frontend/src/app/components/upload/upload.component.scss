@@ -1,0 +1,24 @@
+:host {
+  width: 30rem;
+
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
+
+  .selector {
+    margin-top: 1rem;
+    display: flex;
+    button {
+      margin-left: auto;
+    }
+  }
+
+  .key-input {
+    margin-top: 1rem;
+  }
+
+  div.operations {
+    display: flex;
+    flex-direction: row-reverse;
+  }
+}

@@ -1,0 +1,26 @@
+<div class="title">新增 S3 连接</div>
+<mat-form-field appearance="outline">
+  <mat-label>Name</mat-label>
+  <input matInput required placeholder="Name" [(ngModel)]="newConnection.name">
+  <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+</mat-form-field>
+<mat-form-field appearance="outline">
+  <mat-label>Endpoint</mat-label>
+  <input matInput required placeholder="Endpoint" [(ngModel)]="newConnection.endpoint">
+  <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+</mat-form-field>
+<mat-form-field appearance="outline">
+  <mat-label>AccessKey</mat-label>
+  <input matInput required placeholder="AccessKey" [(ngModel)]="newConnection.access">
+  <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+</mat-form-field>
+<mat-form-field appearance="outline">
+  <mat-label>SecretKey</mat-label>
+  <input matInput required placeholder="SecretKey" [(ngModel)]="newConnection.secret">
+  <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+</mat-form-field>
+
+<div class="operations">
+  <button mat-raised-button color="primary" (click)="createConnection(true)">新增</button>
+  <button mat-raised-button color="info" (click)="createConnection(false)">取消</button>
+</div>

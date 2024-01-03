@@ -1,0 +1,33 @@
+:host {
+  min-width: 20rem;
+  max-width: 20rem;
+  padding: 2rem;
+
+  display: flex;
+  flex-direction: column;
+
+  h3 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    div.svg {
+      height: 2rem;
+      width: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      svg {
+        height: 1.5rem;
+        width: 1.5rem;
+      }
+    }
+  }
+
+
+  div {
+    display: flex;
+    flex-direction: row-reverse;
+  }
+}

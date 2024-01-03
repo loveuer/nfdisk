@@ -1,0 +1,28 @@
+<h3>上传文件</h3>
+
+<input hidden (change)="onFileSelected($event)" #fileInput type="file" webkitdirectory>
+
+<mat-form-field class="example-form-field" appearance="outline">
+  <mat-label>选择文件</mat-label>
+  <input matInput type="text" [(ngModel)]="filename" (click)="fileInput.click()" #fileShow style="cursor: pointer">
+  @if (filename) {
+    <button matSuffix mat-icon-button (click)="cleanSelected()">
+      <mat-icon>close</mat-icon>
+    </button>
+  } @else {
+    <button matSuffix mat-icon-button (click)="fileInput.click()" matTooltip="选择文件">
+      <mat-icon>upload</mat-icon>
+    </button>
+  }
+</mat-form-field>
+
+<mat-form-field appearance="outline" class="key-input">
+  <mat-label>S3 Object Key</mat-label>
+  <input matInput placeholder="置空则默认使用文件名" [(ngModel)]="name">
+  <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+</mat-form-field>
+
+<div class="operations">
+  <button mat-raised-button color="primary" (click)="doUpload(true)">上传</button>
+  <button mat-raised-button color="info" (click)="doUpload(false)">取消</button>
+</div>

@@ -1,0 +1,10 @@
+<h3>新建文件夹</h3>
+<mat-form-field appearance="outline">
+  <mat-label>folder name</mat-label>
+  <input matInput required placeholder="new folder name" [(ngModel)]="data.name">
+  <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+</mat-form-field>
+<div>
+  <button mat-raised-button color="primary" (click)="create(true)">确定</button>
+  <button mat-raised-button color="info" (click)="create(false)">取消</button>
+</div>
