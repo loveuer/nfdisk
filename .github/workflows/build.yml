@@ -1,7 +1,9 @@
 name: Auto Build Windows
 on:
   push:
-    branches: [ build ]
+    tags:
+      - 'v*'
+
 jobs:
   build-job:
     runs-on: windows-latest
@@ -24,3 +26,12 @@ jobs:
 
       - name: build
         run: wails build -ldflags='-s -w'
+
+      - name: create release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release_${{ github.ref }}.exe
+          body_path: build/bin/nf_disk.exe
