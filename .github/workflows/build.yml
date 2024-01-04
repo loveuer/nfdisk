@@ -33,12 +33,13 @@ jobs:
         run: wails build -ldflags='-s -w'
 
       - name: create release
+        id: create_release
         uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "${{ github.ref_name }}"
-          title: "Release_${{ github.ref_name }}"
-          files: build/bin/nf_disk.exe
+          title: "Release_Windows_${{ github.ref_name }}"
+          files: |
+            build/bin/nf_disk.exe
 
 #      - name: create release
 #        id: create_release
