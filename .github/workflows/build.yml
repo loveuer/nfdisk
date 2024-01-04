@@ -7,7 +7,10 @@ on:
 jobs:
   build-job:
     runs-on: windows-latest
-    permissions: write-all
+    permissions:
+      contents: write
+      pull-requests: write
+      repository-projects: write
     steps:
       - name: install node
         uses: actions/checkout@v4
@@ -42,12 +45,12 @@ jobs:
             - v0.0.1 simple functions done
 
       - name: upload release asset
-        id: upload_release_asset
+        id: upload_release
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: build/bin/nf_disk.exe
-          asset_name: release_win_${{ github.ref_name }}.zip
+          asset_name: release_win_${{ github.ref_name }}.exe
           # asset_content_type: application/zip
